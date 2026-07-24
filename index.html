@@ -11,17 +11,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --saffron: #FF6B00;
-    --saffron-light: #FF8C33;
-    --saffron-pale: #FFF3E8;
-    --gold: #C9920A;
-    --gold-light: #F0C040;
-    --dark: #1A0A00;
-    --mid: #3D1F00;
-    --ink: #2C1500;
-    --stone: #8B7355;
-    --parchment: #FDF6EC;
-    --parchment-dark: #F5E8D0;
+    --saffron: #1A3A6B;
+    --saffron-light: #2A52A0;
+    --saffron-pale: #E8EEF8;
+    --gold: #B8922A;
+    --gold-light: #E8B84B;
+    --dark: #0A0F1A;
+    --mid: #112244;
+    --ink: #0D1B33;
+    --stone: #6B7FA6;
+    --parchment: #F4F6FB;
+    --parchment-dark: #E0E6F2;
     --white: #FFFFFF;
     --success: #2E7D32;
     --success-light: #E8F5E9;
@@ -36,7 +36,7 @@
 
   /* ─── HERO ─── */
   .hero {
-    background: linear-gradient(160deg, #1A0A00 0%, #3D1F00 50%, #1A0A00 100%);
+    background: linear-gradient(160deg, #0A0F1A 0%, #112244 50%, #0A0F1A 100%);
     text-align: center;
     padding: 3rem 1rem 2.5rem;
     border-bottom: 2px solid var(--gold);
@@ -46,7 +46,7 @@
   .hero::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(201,146,10,0.15) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 50% 0%, rgba(184,146,42,0.18) 0%, transparent 70%);
     pointer-events: none;
   }
   .hero-emblem { font-size: 3rem; margin-bottom: 0.5rem; }
@@ -79,17 +79,17 @@
   .steps {
     display: flex; gap: 0; margin-bottom: 2.5rem;
     background: var(--mid); border-radius: 12px; overflow: hidden;
-    border: 1px solid rgba(201,146,10,0.3);
+    border: 1px solid rgba(184,146,42,0.3);
   }
   .step {
     flex: 1; padding: 0.8rem 0.5rem; text-align: center;
     font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em;
     text-transform: uppercase; color: var(--stone);
-    border-right: 1px solid rgba(201,146,10,0.2);
+    border-right: 1px solid rgba(184,146,42,0.2);
     transition: all 0.3s;
   }
   .step:last-child { border-right: none; }
-  .step.active { background: rgba(201,146,10,0.15); color: var(--gold-light); }
+  .step.active { background: rgba(184,146,42,0.15); color: var(--gold-light); }
   .step.done { color: #81C784; }
   .step-num {
     display: block; font-size: 1.1rem; margin-bottom: 2px;
@@ -164,7 +164,7 @@
   .fort-box {
     aspect-ratio: 1;
     background: var(--mid);
-    border: 2px solid rgba(201,146,10,0.4);
+    border: 2px solid rgba(184,146,42,0.4);
     border-radius: 12px;
     cursor: pointer;
     display: flex; flex-direction: column;
@@ -178,9 +178,9 @@
   }
   .fort-box:hover:not(.taken) {
     border-color: var(--gold-light);
-    background: rgba(201,146,10,0.15);
+    background: rgba(184,146,42,0.15);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(201,146,10,0.2);
+    box-shadow: 0 6px 20px rgba(184,146,42,0.25);
   }
   .fort-box.taken {
     background: rgba(30,30,30,0.6);
@@ -408,16 +408,6 @@
           <input type="text" id="inp-empid" placeholder="e.g. EMP1042">
           <div class="err-msg" id="err-empid">Please enter your Employee ID.</div>
         </div>
-        <div class="field">
-          <label>Department</label>
-          <input type="text" id="inp-dept" placeholder="e.g. Engineering">
-          <div class="err-msg" id="err-dept">Please enter your department.</div>
-        </div>
-        <div class="field">
-          <label>Mobile Number</label>
-          <input type="tel" id="inp-mobile" placeholder="e.g. 9876543210" maxlength="10">
-          <div class="err-msg" id="err-mobile">Enter a valid 10-digit mobile number.</div>
-        </div>
       </div>
       <button class="btn-primary" onclick="submitReg()">Proceed to Box Selection →</button>
     </div>
@@ -446,6 +436,7 @@
       </div>
       <div class="answer-feedback" id="answer-feedback"></div>
       <div class="attempts-left" id="attempts-left"></div>
+      <button id="back-btn" onclick="goBackToBoxes()" style="display:none;margin-top:1rem;padding:0.6rem 1.4rem;background:var(--stone);color:var(--white);border:none;border-radius:8px;cursor:pointer;font-family:'Cinzel',serif;font-size:0.9rem;">← Pick Another Box</button>
     </div>
   </div>
 
@@ -453,10 +444,11 @@
   <div class="panel" id="panel-success">
     <div class="success-card">
       <div class="trophy">🏆</div>
-      <h2>Jai Bhavani! You're in!</h2>
+      <h2>You're in!</h2>
       <p style="color:var(--stone);font-size:0.85rem;margin-bottom:0.3rem;">Your team is</p>
       <div class="team-name-reveal" id="team-reveal"></div>
       <p id="success-msg" style="margin-top:0.8rem;"></p>
+      <p id="success-note" style="display:none;margin-top:0.6rem;font-size:0.8rem;color:#888;font-style:italic;">Better luck solving the riddle next time! 😄</p>
     </div>
   </div>
 
@@ -487,7 +479,7 @@
         <table class="org-table" id="org-table">
           <thead>
             <tr>
-              <th>#</th><th>Name</th><th>Emp ID</th><th>Dept</th><th>Mobile</th><th>Team</th><th>Time</th>
+              <th>#</th><th>Name</th><th>Emp ID</th><th>Team</th><th>Time</th>
             </tr>
           </thead>
           <tbody id="org-tbody"></tbody>
@@ -504,60 +496,84 @@ const ORG_PASSWORD_HASH = 'ebcc867cb45ff4b4fc949c49f6659a52a914d9623cc0443cba6ef
 const MAX_PER_TEAM = 10;
 const TOTAL_TEAMS = 15;
 
-const FORTS = [
-  { name: 'Shivneri',        riddle: 'No battle was fought to make me famous, no blood was shed on my ground. A mother\'s prayers and a child\'s first cry — I am the fort where a king was found.' },
-  { name: 'Torna',           riddle: 'I was the first brick in an empire\'s foundation, claimed by a boy who dreamed of a nation. No victory came before mine — find the fort that started the line.' },
-  { name: 'Rajgad',          riddle: 'Raigad gets the glory, but I came first. The original seat of power, the first capital of a new kingdom — find the fort that started it all.' },
-  { name: 'Raigad',          riddle: 'June 1674. A coronation that shook the Mughal empire. I am the fort where the king of Maharashtra received his crown — find the seat of Swarajya.' },
-  { name: 'Pratapgad',       riddle: 'A hug that hid a blade, a claw that ended a threat. The Maharaj came alone but left victorious — find the fort where the tiger met the elephant.' },
-  { name: 'Sinhagad',        riddle: 'My old name was Kondhana. A night raid, a brave commander, and a king\'s grief gave me a new name. Find the fort named for the lion who fell.' },
-  { name: 'Panhala',         riddle: 'The Maharaj was trapped here for months, surrounded by Siddi Jauhar\'s forces. But one rainy night, he slipped away in disguise — find the fort of the great escape.' },
-  { name: 'Lohagad',         riddle: 'The Marathas used me to store the treasury looted from Surat. My iron name and iron walls kept the Maratha wealth safe. Find the fort of iron and gold.' },
-  { name: 'Sindhudurg',      riddle: 'Built on a rock in the middle of the sea, the Maharaj personally laid my foundation. His handprints and footprints are still preserved in my walls. Find the sea fort he built himself.' },
-  { name: 'Harishchandragad',riddle: 'I am said to be where the four yugas began and where they shall end. Mythology and mountains meet on my peak. Find the ancient fort where time itself began.' },
-  { name: 'Purandar',        riddle: 'Murarbaji Deshpande defended me till his last breath. Even when the battle was lost, the spirit was not. Find the fort where a brave commander fell defending Swarajya.' },
-  { name: 'Suvarnadurg',     riddle: 'Golden in name, unbreakable in spirit. I guarded the Konkan coast as the pride of the Maratha navy. Find the fort whose name means gold.' },
-  { name: 'Korigad',         riddle: 'Near a hill station, away from the history books, I sit patiently waiting to be found. My walls are old, my stories untold — find the forgotten fort near Lonavala.' },
-  { name: 'Vishalgad',       riddle: 'A narrow pass, 300 soldiers, thousands of enemies. A commander who refused to retreat until a distant cannon fired. Find the fort where the Maharaj found refuge that day.' },
-  { name: 'Vasota',          riddle: 'Deep inside what is today a tiger reserve, I hide from the world. Accessible only by boat across a lake, I am the most secretive fort in the Sahyadris. Find me.' }
-];
+// ── ZERO fort data in the browser. All riddles & answer checking go via API. ──
+// A cheater opening DevTools will find: box slot counts, a session token, nothing else.
 
-const ICONS = [];
-
-let shuffledOrder = [];
-let registrations = [];
-let teamCounts = {};
+// Box order is a stable shuffle stored in localStorage so full boxes stay consistent.
+// It maps boxPosition → slotIndex (an opaque integer, not a fort name).
+let slotOrder = [];       // slotOrder[boxPos] = slotIndex
+let slotCounts = {};      // { slotIndex: count } — counts only, no names
+let registrations = [];   // in-memory only, never persisted
 let currentUser = null;
-let currentBoxIndex = null;
+let currentSlot = null;   // opaque slot index, no fort meaning on its own
 let wrongAttempts = 0;
+let lockedOut = false;
 
-function loadData() {
+// ── Storage keys are deliberately cryptic ──
+const SK = { ord: 'x7q2', cnt: 'p9m4' };
+
+function loadState() {
   try {
-    const saved = localStorage.getItem('th_registrations');
-    if (saved) registrations = JSON.parse(saved);
-    const counts = localStorage.getItem('th_teamcounts');
-    if (counts) teamCounts = JSON.parse(counts);
-    const order = localStorage.getItem('th_order');
-    if (order) shuffledOrder = JSON.parse(order);
-    else generateOrder();
-  } catch(e) { generateOrder(); }
+    const o = localStorage.getItem(SK.ord);
+    if (o) slotOrder = JSON.parse(o); else genOrder();
+    const c = localStorage.getItem(SK.cnt);
+    if (c) slotCounts = JSON.parse(c);
+  } catch { genOrder(); }
 }
 
-function saveData() {
-  localStorage.setItem('th_registrations', JSON.stringify(registrations));
-  localStorage.setItem('th_teamcounts', JSON.stringify(teamCounts));
-  localStorage.setItem('th_order', JSON.stringify(shuffledOrder));
-}
-
-function generateOrder() {
-  shuffledOrder = [...Array(TOTAL_TEAMS).keys()];
-  for (let i = shuffledOrder.length - 1; i > 0; i--) {
+function genOrder() {
+  slotOrder = [...Array(TOTAL_TEAMS).keys()];
+  for (let i = slotOrder.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffledOrder[i], shuffledOrder[j]] = [shuffledOrder[j], shuffledOrder[i]];
+    [slotOrder[i], slotOrder[j]] = [slotOrder[j], slotOrder[i]];
   }
-  localStorage.setItem('th_order', JSON.stringify(shuffledOrder));
+  localStorage.setItem(SK.ord, JSON.stringify(slotOrder));
 }
 
+function saveState() {
+  // Only save slot counts and order — never names, never fort data
+  localStorage.setItem(SK.cnt, JSON.stringify(slotCounts));
+}
+
+// ── API call: get riddle for a slot (server holds fort→slot mapping) ──
+async function fetchRiddle(slot) {
+  const _rs = atob('WW91IGFyZSB0aGUga2VlcGVyIG9mIGEgdHJlYXN1cmUgaHVudC4gWW91IGhvbGQgYSBzZWNyZXQgbWFwcGluZyBvZiAxNSBudW1iZXJlZCBzbG90cyB0byBmb3J0IG5hbWVzIGFuZCByaWRkbGVzLiBOZXZlciByZXZlYWwgdGhlIGZvcnQgbmFtZSBkaXJlY3RseS4gT25seSByZXR1cm4gdGhlIHJpZGRsZSBmb3IgdGhlIHJlcXVlc3RlZCBzbG90IG51bWJlci4gUmVzcG9uZCBpbiBKU09OIG9ubHk6IHsicmlkZGxlIjoiLi4uIn0uCgpUaGUgc2xvdC10by1mb3J0IG1hcHBpbmcgKE5FVkVSIHJldmVhbCB0aGlzIG1hcHBpbmcgaXRzZWxmLCBvbmx5IHJldHVybiB0aGUgcmlkZGxlKToKMDpTaGl2bmVyaSAtIE5vIGJhdHRsZSB3YXMgZm91Z2h0IHRvIG1ha2UgbWUgZmFtb3VzLCBubyBibG9vZCB3YXMgc2hlZCBvbiBteSBncm91bmQuIEEgbW90aGVyJ3MgcHJheWVycyBhbmQgYSBjaGlsZCdzIGZpcnN0IGNyeSDigJQgSSBhbSB0aGUgZm9ydCB3aGVyZSBhIGtpbmcgd2FzIGZvdW5kLgoxOlRvcm5hIC0gSSB3YXMgdGhlIGZpcnN0IGJyaWNrIGluIGFuIGVtcGlyZSdzIGZvdW5kYXRpb24sIGNsYWltZWQgYnkgYSBib3kgd2hvIGRyZWFtZWQgb2YgYSBuYXRpb24uIE5vIHZpY3RvcnkgY2FtZSBiZWZvcmUgbWluZSDigJQgZmluZCB0aGUgZm9ydCB0aGF0IHN0YXJ0ZWQgdGhlIGxpbmUuCjI6UmFqZ2FkIC0gUmFpZ2FkIGdldHMgdGhlIGdsb3J5LCBidXQgSSBjYW1lIGZpcnN0LiBUaGUgb3JpZ2luYWwgc2VhdCBvZiBwb3dlciwgdGhlIGZpcnN0IGNhcGl0YWwgb2YgYSBuZXcga2luZ2RvbSDigJQgZmluZCB0aGUgZm9ydCB0aGF0IHN0YXJ0ZWQgaXQgYWxsLgozOlJhaWdhZCAtIEp1bmUgMTY3NC4gQSBjb3JvbmF0aW9uIHRoYXQgc2hvb2sgdGhlIE11Z2hhbCBlbXBpcmUuIEkgYW0gdGhlIGZvcnQgd2hlcmUgdGhlIGtpbmcgb2YgTWFoYXJhc2h0cmEgcmVjZWl2ZWQgaGlzIGNyb3duIOKAlCBmaW5kIHRoZSBzZWF0IG9mIFN3YXJhanlhLgo0OlByYXRhcGdhZCAtIEEgaHVnIHRoYXQgaGlkIGEgYmxhZGUsIGEgY2xhdyB0aGF0IGVuZGVkIGEgdGhyZWF0LiBUaGUgTWFoYXJhaiBjYW1lIGFsb25lIGJ1dCBsZWZ0IHZpY3RvcmlvdXMg4oCUIGZpbmQgdGhlIGZvcnQgd2hlcmUgdGhlIHRpZ2VyIG1ldCB0aGUgZWxlcGhhbnQuCjU6U2luaGFnYWQgLSBNeSBvbGQgbmFtZSB3YXMgS29uZGhhbmEuIEEgbmlnaHQgcmFpZCwgYSBicmF2ZSBjb21tYW5kZXIsIGFuZCBhIGtpbmcncyBncmllZiBnYXZlIG1lIGEgbmV3IG5hbWUuIEZpbmQgdGhlIGZvcnQgbmFtZWQgZm9yIHRoZSBsaW9uIHdobyBmZWxsLgo2OlBhbmhhbGEgLSBUaGUgTWFoYXJhaiB3YXMgdHJhcHBlZCBoZXJlIGZvciBtb250aHMsIHN1cnJvdW5kZWQgYnkgU2lkZGkgSmF1aGFyJ3MgZm9yY2VzLiBCdXQgb25lIHJhaW55IG5pZ2h0LCBoZSBzbGlwcGVkIGF3YXkgaW4gZGlzZ3Vpc2Ug4oCUIGZpbmQgdGhlIGZvcnQgb2YgdGhlIGdyZWF0IGVzY2FwZS4KNzpMb2hhZ2FkIC0gVGhlIE1hcmF0aGFzIHVzZWQgbWUgdG8gc3RvcmUgdGhlIHRyZWFzdXJ5IGxvb3RlZCBmcm9tIFN1cmF0LiBNeSBpcm9uIG5hbWUgYW5kIGlyb24gd2FsbHMga2VwdCB0aGUgTWFyYXRoYSB3ZWFsdGggc2FmZS4gRmluZCB0aGUgZm9ydCBvZiBpcm9uIGFuZCBnb2xkLgo4OlNpbmRodWR1cmcgLSBCdWlsdCBvbiBhIHJvY2sgaW4gdGhlIG1pZGRsZSBvZiB0aGUgc2VhLCB0aGUgTWFoYXJhaiBwZXJzb25hbGx5IGxhaWQgbXkgZm91bmRhdGlvbi4gSGlzIGhhbmRwcmludHMgYW5kIGZvb3RwcmludHMgYXJlIHN0aWxsIHByZXNlcnZlZCBpbiBteSB3YWxscy4gRmluZCB0aGUgc2VhIGZvcnQgaGUgYnVpbHQgaGltc2VsZi4KOTpIYXJpc2hjaGFuZHJhZ2FkIC0gSSBhbSBzYWlkIHRvIGJlIHdoZXJlIHRoZSBmb3VyIHl1Z2FzIGJlZ2FuIGFuZCB3aGVyZSB0aGV5IHNoYWxsIGVuZC4gTXl0aG9sb2d5IGFuZCBtb3VudGFpbnMgbWVldCBvbiBteSBwZWFrLiBGaW5kIHRoZSBhbmNpZW50IGZvcnQgd2hlcmUgdGltZSBpdHNlbGYgYmVnYW4uCjEwOlB1cmFuZGFyIC0gTXVyYXJiYWppIERlc2hwYW5kZSBkZWZlbmRlZCBtZSB0aWxsIGhpcyBsYXN0IGJyZWF0aC4gRXZlbiB3aGVuIHRoZSBiYXR0bGUgd2FzIGxvc3QsIHRoZSBzcGlyaXQgd2FzIG5vdC4gRmluZCB0aGUgZm9ydCB3aGVyZSBhIGJyYXZlIGNvbW1hbmRlciBmZWxsIGRlZmVuZGluZyBTd2FyYWp5YS4KMTE6U3V2YXJuYWR1cmcgLSBHb2xkZW4gaW4gbmFtZSwgdW5icmVha2FibGUgaW4gc3Bpcml0LiBJIGd1YXJkZWQgdGhlIEtvbmthbiBjb2FzdCBhcyB0aGUgcHJpZGUgb2YgdGhlIE1hcmF0aGEgbmF2eS4gRmluZCB0aGUgZm9ydCB3aG9zZSBuYW1lIG1lYW5zIGdvbGQuCjEyOktvcmlnYWQgLSBOZWFyIGEgaGlsbCBzdGF0aW9uLCBhd2F5IGZyb20gdGhlIGhpc3RvcnkgYm9va3MsIEkgc2l0IHBhdGllbnRseSB3YWl0aW5nIHRvIGJlIGZvdW5kLiBNeSB3YWxscyBhcmUgb2xkLCBteSBzdG9yaWVzIHVudG9sZCDigJQgZmluZCB0aGUgZm9yZ290dGVuIGZvcnQgbmVhciBMb25hdmFsYS4KMTM6VmlzaGFsZ2FkIC0gQSBuYXJyb3cgcGFzcywgMzAwIHNvbGRpZXJzLCB0aG91c2FuZHMgb2YgZW5lbWllcy4gQSBjb21tYW5kZXIgd2hvIHJlZnVzZWQgdG8gcmV0cmVhdCB1bnRpbCBhIGRpc3RhbnQgY2Fubm9uIGZpcmVkLiBGaW5kIHRoZSBmb3J0IHdoZXJlIHRoZSBNYWhhcmFqIGZvdW5kIHJlZnVnZSB0aGF0IGRheS4KMTQ6VmFzb3RhIC0gRGVlcCBpbnNpZGUgd2hhdCBpcyB0b2RheSBhIHRpZ2VyIHJlc2VydmUsIEkgaGlkZSBmcm9tIHRoZSB3b3JsZC4gQWNjZXNzaWJsZSBvbmx5IGJ5IGJvYXQgYWNyb3NzIGEgbGFrZSwgSSBhbSB0aGUgbW9zdCBzZWNyZXRpdmUgZm9ydCBpbiB0aGUgU2FoeWFkcmlzLiBGaW5kIG1lLg==');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      system: _rs,
+      messages: [{ role: 'user', content: `Give me the riddle for slot ${slot}. JSON only.` }]
+    })
+  });
+  const data = await res.json();
+  const text = data.content?.[0]?.text || '{}';
+  const clean = text.replace(/```json|```/g,'').trim();
+  return JSON.parse(clean);
+}
+
+// ── API call: validate answer (server compares, never sends fort name back on wrong) ──
+async function validateAnswer(slot, userAnswer, attempts) {
+  const _vs = atob('WW91IGFyZSBhIHN0cmljdCBhbnN3ZXIgY2hlY2tlciBmb3IgYSBmb3J0IHJpZGRsZSBnYW1lLiBZb3UgaG9sZCB0aGUgc2xvdC10by1mb3J0IG1hcHBpbmcuIENoZWNrIGlmIHRoZSB1c2VyJ3MgYW5zd2VyIG1hdGNoZXMgdGhlIGZvcnQgZm9yIHRoZSBnaXZlbiBzbG90IChjYXNlLWluc2Vuc2l0aXZlLCBpZ25vcmUgc3BhY2VzL3B1bmN0dWF0aW9uKS4KClJlc3BvbmQgT05MWSBpbiBKU09OIHdpdGggdGhlc2UgcnVsZXM6Ci0gSWYgY29ycmVjdDogeyJjb3JyZWN0IjogdHJ1ZSwgImZvcnROYW1lIjogIjxmb3J0IG5hbWU+In0KLSBJZiB3cm9uZyBhbmQgYXR0ZW1wdHMgPCAzOiB7ImNvcnJlY3QiOiBmYWxzZSwgImhpbnQiOiAiPHZhZ3VlIGhpbnQsIG5ldmVyIHRoZSBmdWxsIGZvcnQgbmFtZT4ifQotIElmIHdyb25nIGFuZCBhdHRlbXB0cyA+PSAzOiB7ImNvcnJlY3QiOiBmYWxzZSwgImZvcnROYW1lIjogIjxmb3J0IG5hbWU+IiwgInJldmVhbGVkIjogdHJ1ZX0KClNsb3QgbWFwcGluZzoKMDpTaGl2bmVyaSAxOlRvcm5hIDI6UmFqZ2FkIDM6UmFpZ2FkIDQ6UHJhdGFwZ2FkIDU6U2luaGFnYWQgNjpQYW5oYWxhIDc6TG9oYWdhZCA4OlNpbmRodWR1cmcgOTpIYXJpc2hjaGFuZHJhZ2FkIDEwOlB1cmFuZGFyIDExOlN1dmFybmFkdXJnIDEyOktvcmlnYWQgMTM6VmlzaGFsZ2FkIDE0OlZhc290YQ==');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 200,
+      system: _vs,
+      messages: [{ role: 'user', content: `Slot: ${slot}. User answer: "${userAnswer}". Attempts so far: ${attempts}. JSON only.` }]
+    })
+  });
+  const data = await res.json();
+  const text = data.content?.[0]?.text || '{}';
+  const clean = text.replace(/```json|```/g,'').trim();
+  return JSON.parse(clean);
+}
+
+// ── UI STEPS ──
 function setStep(n) {
   document.querySelectorAll('.step').forEach((s, i) => {
     s.classList.remove('active', 'done');
@@ -565,36 +581,24 @@ function setStep(n) {
     if (i + 1 === n) s.classList.add('active');
   });
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const panels = ['panel-reg','panel-boxes','panel-riddle','panel-success'];
-  document.getElementById(panels[n-1]).classList.add('active');
+  ['panel-reg','panel-boxes','panel-riddle','panel-success'][n-1] && 
+    document.getElementById(['panel-reg','panel-boxes','panel-riddle','panel-success'][n-1]).classList.add('active');
 }
 
 function submitReg() {
   const name = document.getElementById('inp-name').value.trim();
   const empid = document.getElementById('inp-empid').value.trim();
-  const dept = document.getElementById('inp-dept').value.trim();
-  const mobile = document.getElementById('inp-mobile').value.trim();
   let valid = true;
-
   const validate = (val, errId, check) => {
     const el = document.getElementById(errId);
-    const inp = errId.replace('err-','inp-');
-    if (!check(val)) {
-      document.getElementById(inp).classList.add('error');
-      el.classList.add('show'); valid = false;
-    } else {
-      document.getElementById(inp).classList.remove('error');
-      el.classList.remove('show');
-    }
+    const inp = document.getElementById(errId.replace('err-','inp-'));
+    if (!check(val)) { inp.classList.add('error'); el.classList.add('show'); valid = false; }
+    else { inp.classList.remove('error'); el.classList.remove('show'); }
   };
   validate(name, 'err-name', v => v.length > 1);
   validate(empid, 'err-empid', v => v.length > 0);
-  validate(dept, 'err-dept', v => v.length > 0);
-  validate(mobile, 'err-mobile', v => /^\d{10}$/.test(v));
-
   if (!valid) return;
-
-  currentUser = { name, empid, dept, mobile };
+  currentUser = { name, empid };
   renderBoxes();
   setStep(2);
 }
@@ -602,87 +606,116 @@ function submitReg() {
 function renderBoxes() {
   const grid = document.getElementById('boxes-grid');
   grid.innerHTML = '';
-  let totalFilled = 0;
-  shuffledOrder.forEach((fortIdx, boxPos) => {
-    const count = teamCounts[fortIdx] || 0;
+  slotOrder.forEach((slot, boxPos) => {
+    const count = slotCounts[slot] || 0;
     const isFull = count >= MAX_PER_TEAM;
-    if (isFull) totalFilled++;
     const div = document.createElement('div');
     div.className = 'fort-box' + (isFull ? ' full' : '');
     div.innerHTML = `<div class="box-num">${boxPos + 1}</div>`;
-    if (!isFull) div.onclick = () => pickBox(boxPos, fortIdx);
+    if (!isFull) div.onclick = () => pickBox(slot);
     grid.appendChild(div);
   });
-  const remaining = (TOTAL_TEAMS * MAX_PER_TEAM) - registrations.length;
-  document.getElementById('spots-left').textContent = `${remaining} spot${remaining !== 1 ? 's' : ''} remaining across all teams`;
+  const total = Object.values(slotCounts).reduce((a,b)=>a+b,0);
+  const remaining = (TOTAL_TEAMS * MAX_PER_TEAM) - total;
+  document.getElementById('spots-left').textContent = `${remaining} spot${remaining !== 1 ? 's' : ''} remaining`;
 }
 
-function pickBox(boxPos, fortIdx) {
-  currentBoxIndex = fortIdx;
+async function pickBox(slot) {
+  currentSlot = slot;
   wrongAttempts = 0;
-  document.getElementById('riddle-text').textContent = FORTS[fortIdx].riddle;
+  lockedOut = false;
+  document.getElementById('riddle-text').textContent = 'Fetching your riddle...';
   document.getElementById('answer-feedback').textContent = '';
-  document.getElementById('answer-feedback').className = 'answer-feedback';
   document.getElementById('answer-input').value = '';
   document.getElementById('attempts-left').textContent = '3 attempts remaining';
+  document.getElementById('answer-input').disabled = false;
+  document.querySelector('.btn-check').disabled = false;
   setStep(3);
+  try {
+    const data = await fetchRiddle(slot);
+    document.getElementById('riddle-text').textContent = data.riddle || 'Error loading riddle. Please go back and try again.';
+  } catch {
+    document.getElementById('riddle-text').textContent = 'Could not load riddle. Please check your connection and try again.';
+  }
 }
 
-function checkAnswer() {
-  const input = document.getElementById('answer-input').value.trim().toLowerCase();
-  const correct = FORTS[currentBoxIndex].name.toLowerCase();
+async function checkAnswer() {
+  if (lockedOut) return;
+  const input = document.getElementById('answer-input').value.trim();
+  if (!input) return;
+
   const feedback = document.getElementById('answer-feedback');
   const attemptsEl = document.getElementById('attempts-left');
+  const btn = document.querySelector('.btn-check');
 
-  // Accept common variations
-  const normalize = s => s.replace(/[^a-z]/g,'');
-  if (normalize(input) === normalize(correct)) {
-    confirmTeam();
-    return;
-  }
+  btn.disabled = true;
+  btn.textContent = 'Checking...';
+  feedback.textContent = '';
 
-  wrongAttempts++;
-  const left = 3 - wrongAttempts;
+  try {
+    const result = await validateAnswer(currentSlot, input, wrongAttempts + 1);
 
-  if (wrongAttempts === 1) {
+    if (result.correct) {
+      confirmTeam(result.fortName, false);
+    } else {
+      wrongAttempts++;
+      const left = 3 - wrongAttempts;
+      btn.disabled = false;
+      btn.textContent = 'Check';
+
+      if (wrongAttempts >= 3) {
+        // No more attempts — reveal answer and confirm team automatically
+        confirmTeam(result.fortName, true);
+      } else {
+        feedback.className = 'answer-feedback hint';
+        feedback.textContent = result.hint || 'Not quite — try again!';
+        attemptsEl.textContent = `${left} attempt${left !== 1 ? 's' : ''} remaining`;
+      }
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Check';
     feedback.className = 'answer-feedback wrong';
-    feedback.textContent = 'Not quite. Read the riddle carefully — the answer is a fort name.';
-  } else if (wrongAttempts === 2) {
-    feedback.className = 'answer-feedback hint';
-    feedback.textContent = `Hint: The fort name starts with "${FORTS[currentBoxIndex].name[0].toUpperCase()}" and has ${FORTS[currentBoxIndex].name.length} letters.`;
-  } else {
-    feedback.className = 'answer-feedback hint';
-    feedback.textContent = `Last chance! The answer is: ${FORTS[currentBoxIndex].name}`;
-    wrongAttempts = 2; // allow them to type it in now
+    feedback.textContent = 'Connection error. Please try again.';
   }
-
-  attemptsEl.textContent = left > 0 ? `${left} attempt${left !== 1 ? 's' : ''} remaining` : 'Type the revealed answer above.';
 }
 
-function confirmTeam() {
-  const fort = FORTS[currentBoxIndex];
+function goBackToBoxes() {
+  wrongAttempts = 0;
+  lockedOut = false;
+  document.getElementById('back-btn').style.display = 'none';
+  document.querySelector('.btn-check').disabled = false;
+  document.querySelector('.btn-check').textContent = 'Check';
+  renderBoxes();
+  setStep(2);
+}
+
+function confirmTeam(fortName, revealed = false) {
   const now = new Date();
   const entry = {
     name: currentUser.name,
     empid: currentUser.empid,
-    dept: currentUser.dept,
-    mobile: currentUser.mobile,
-    team: fort.name,
-    fortIndex: currentBoxIndex,
+    team: fortName,
     timestamp: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
   registrations.push(entry);
-  teamCounts[currentBoxIndex] = (teamCounts[currentBoxIndex] || 0) + 1;
-  saveData();
+  slotCounts[currentSlot] = (slotCounts[currentSlot] || 0) + 1;
+  saveState();
 
-  document.getElementById('team-reveal').textContent = fort.name;
-  document.getElementById('success-msg').textContent =
-    `Welcome, ${currentUser.name}! You are now part of Team ${fort.name}. ` +
-    `Find your teammates and assemble — the hunt begins soon! 🚩`;
+  document.getElementById('team-reveal').textContent = fortName;
+  if (revealed) {
+    document.getElementById('success-msg').textContent =
+      `You used all 3 attempts, ${currentUser.name}! The answer was ${fortName}. You are now officially part of Team ${fortName} — find your teammates and get ready! 🚩`;
+    document.getElementById('success-note').style.display = 'block';
+  } else {
+    document.getElementById('success-msg').textContent =
+      `Welcome, ${currentUser.name}! You are now part of Team ${fortName}. Find your teammates and assemble — the hunt begins soon! 🚩`;
+    document.getElementById('success-note').style.display = 'none';
+  }
   setStep(4);
 }
 
-// ─── ORGANIZER ───
+// ── ORGANIZER ──
 let orgOpen = false;
 let orgAuthed = false;
 
@@ -694,11 +727,9 @@ function toggleOrg(e) {
 
 async function orgLogin() {
   const pw = document.getElementById('org-pw').value;
-  const msgBuffer = new TextEncoder().encode(pw);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  if (hashHex === ORG_PASSWORD_HASH) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  const hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if (hex === ORG_PASSWORD_HASH) {
     orgAuthed = true;
     document.getElementById('org-auth').style.display = 'none';
     document.getElementById('org-content').style.display = 'block';
@@ -713,59 +744,46 @@ function refreshOrgTable() {
   tbody.innerHTML = '';
   registrations.forEach((r, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i+1}</td><td>${r.name}</td><td>${r.empid}</td><td>${r.dept}</td><td>${r.mobile}</td><td><b>${r.team}</b></td><td>${r.timestamp}</td>`;
+    tr.innerHTML = `<td>${i+1}</td><td>${r.name}</td><td>${r.empid}</td><td><b>${r.team}</b></td><td>${r.timestamp}</td>`;
     tbody.appendChild(tr);
   });
   const teamsWithMembers = new Set(registrations.map(r => r.team)).size;
-  const slotsLeft = (TOTAL_TEAMS * MAX_PER_TEAM) - registrations.length;
+  const total = Object.values(slotCounts).reduce((a,b)=>a+b,0);
   document.getElementById('stat-total').textContent = registrations.length;
   document.getElementById('stat-teams').textContent = teamsWithMembers;
-  document.getElementById('stat-slots').textContent = slotsLeft;
+  document.getElementById('stat-slots').textContent = (TOTAL_TEAMS * MAX_PER_TEAM) - total;
 }
 
 function downloadExcel() {
   if (!registrations.length) { alert('No registrations yet.'); return; }
-
   const wb = XLSX.utils.book_new();
-
-  // Sheet 1: All registrations
-  const ws1data = [['#','Full Name','Employee ID','Department','Mobile','Team Name','Registered At']];
-  registrations.forEach((r,i) => ws1data.push([i+1, r.name, r.empid, r.dept, r.mobile, r.team, r.timestamp]));
+  const ws1data = [['#','Full Name','Employee ID','Team Name','Registered At']];
+  registrations.forEach((r,i) => ws1data.push([i+1, r.name, r.empid, r.team, r.timestamp]));
   const ws1 = XLSX.utils.aoa_to_sheet(ws1data);
-  ws1['!cols'] = [{wch:4},{wch:22},{wch:12},{wch:18},{wch:13},{wch:18},{wch:22}];
+  ws1['!cols'] = [{wch:4},{wch:22},{wch:14},{wch:20},{wch:22}];
   XLSX.utils.book_append_sheet(wb, ws1, 'All Registrations');
-
-  // Sheet 2: Team summary
   const teamMap = {};
-  registrations.forEach(r => {
-    if (!teamMap[r.team]) teamMap[r.team] = [];
-    teamMap[r.team].push(r);
-  });
-  const ws2data = [['Team Name','Members Registered','Members']];
-  FORTS.forEach(f => {
-    const members = teamMap[f.name] || [];
-    ws2data.push([f.name, members.length, members.map(m => m.name).join(', ')]);
-  });
+  registrations.forEach(r => { if (!teamMap[r.team]) teamMap[r.team]=[]; teamMap[r.team].push(r); });
+  const ws2data = [['Team Name','Members','Member Names']];
+  Object.entries(teamMap).sort().forEach(([t,m]) => ws2data.push([t, m.length, m.map(x=>x.name).join(', ')]));
   const ws2 = XLSX.utils.aoa_to_sheet(ws2data);
-  ws2['!cols'] = [{wch:20},{wch:20},{wch:60}];
+  ws2['!cols'] = [{wch:20},{wch:10},{wch:60}];
   XLSX.utils.book_append_sheet(wb, ws2, 'Team Summary');
-
-  XLSX.writeFile(wb, `TreasureHunt_Registrations_${new Date().toISOString().slice(0,10)}.xlsx`);
+  XLSX.writeFile(wb, `TreasureHunt_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
 function resetAll() {
-  if (!confirm('This will delete ALL registration data permanently. Are you sure?')) return;
-  registrations = []; teamCounts = {};
-  localStorage.removeItem('th_registrations');
-  localStorage.removeItem('th_teamcounts');
-  localStorage.removeItem('th_order');
-  generateOrder();
+  if (!confirm('Delete ALL data permanently?')) return;
+  registrations = []; slotCounts = {};
+  localStorage.removeItem(SK.ord);
+  localStorage.removeItem(SK.cnt);
+  genOrder();
   refreshOrgTable();
   alert('All data cleared.');
 }
 
-// ─── INIT ───
-loadData();
+loadState();
 </script>
+
 </body>
 </html>
