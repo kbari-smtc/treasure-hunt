@@ -500,7 +500,7 @@
 </div>
 
 <script>
-const ORG_PASSWORD = 'Jai_Shivaji_2025';
+const ORG_PASSWORD_HASH = 'ebcc867cb45ff4b4fc949c49f6659a52a914d9623cc0443cba6ef12e2431dc7b';
 const MAX_PER_TEAM = 10;
 const TOTAL_TEAMS = 15;
 
@@ -692,9 +692,13 @@ function toggleOrg(e) {
   document.getElementById('org-panel').classList.toggle('open', orgOpen);
 }
 
-function orgLogin() {
+async function orgLogin() {
   const pw = document.getElementById('org-pw').value;
-  if (pw === ORG_PASSWORD) {
+  const msgBuffer = new TextEncoder().encode(pw);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  if (hashHex === ORG_PASSWORD_HASH) {
     orgAuthed = true;
     document.getElementById('org-auth').style.display = 'none';
     document.getElementById('org-content').style.display = 'block';
